@@ -5,6 +5,7 @@ pip install pandas
 pip install numpy '''
 
 
+import numpy as np
 import fitz
 import pandas as pd
 import re
@@ -46,3 +47,21 @@ def format_unpacker(block_dict):
                         rows.append((xmin, ymin, xmax, ymax, text, is_upper, is_bold, span_font, font_size))
   spanning = pd.DataFrame(rows, columns=['xmin','ymin','xmax','ymax', 'text', 'is_upper','is_bold','span_font', 'font_size'])
   return spanning
+
+
+
+def score_generator(span_df):
+  span_scores = []
+  span_num_occur = {}
+  special = '[(_:/,#%\=@)]'
+  for index, span_row in span_df.iterrows():
+    score = round(span_row.font_size)
+    text = span_row.text
+    if not re.search(special, text):
+        if span_row.is_bold:
+            score +=1
+        if span_row.is_upper:
+            score +=1
+    span_scores.append(score)
+  values, counts = np.unique(span_scores, return_counts=True)
+  return values, counts
