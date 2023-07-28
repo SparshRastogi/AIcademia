@@ -66,34 +66,3 @@ def score_generator(span_df):
   values, counts = np.unique(span_scores, return_counts=True)
   return values, counts
 
-
-
-p_size = max(style_dict, key=style_dict.get)
-
-
-
-
-idx = 0
-
-tag = {}
-
-
-
-
-for size in sorted(values, reverse = True):
-
-    idx += 1
-
-    if size == p_size:
-
-        idx = 0
-
-        tag[size] = 'p'
-
-    if size > p_size:
-
-        tag[size] = 'h{0}'.format(idx)
-
-    if size < p_size:
-
-        tag[size] = 's{0}'.format(idx)
