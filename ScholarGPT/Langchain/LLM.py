@@ -3,3 +3,7 @@ from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from huggingface_hub import hf_hub_download
 from langchain.chains.question_answering import load_qa_chain
+from PyPDF2 import PdfReader
+from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores import ElasticVectorSearch,Pinecone,Weaviate,FAISS
