@@ -16,3 +16,12 @@ text_splitter = CharacterTextSplitter(
     length_function = len,
 )
 texts = text_splitter.split_text(raw_text)
+llm = LlamaCpp(
+    model_path=model_path,
+    max_tokens=256,
+    n_gpu_layers=n_gpu_layers,
+    n_batch=n_batch,
+    callback_manager=callback_manager,
+    n_ctx=1536,
+    verbose=False,
+)
