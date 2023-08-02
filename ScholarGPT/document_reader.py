@@ -66,3 +66,49 @@ def score_generator(span_df):
   values, counts = np.unique(span_scores, return_counts=True)
   return values, counts
 
+span_scores = []
+span_num_occur = {}
+special = '[(_:/,#%\=@)]'
+for index, span_row in span_df.iterrows():
+    score = round(span_row.font_size)
+    text = span_row.text
+    if not re.search(special, text):
+        if span_row.is_bold:
+            score +=1
+        if span_row.is_upper:
+            score +=1
+    span_scores.append(score)
+values, counts = np.unique(span_scores, return_counts=True)
+headings_list = []
+
+text_list = []
+
+tmp = []
+
+heading = ''
+
+for index, span_row in span_df.iterrows():
+
+    text = span_row.text
+
+    tag = span_row.tag
+
+    if 'h' in tag:
+
+        headings_list.append(text)
+
+        text_list.append('\n'.join(tmp))
+
+        tmp = []
+
+        heading = text
+
+    else:
+
+        tmp.append(text)
+
+text_list.append('\n'.join(tmp))
+
+text_list = text_list[1:]
+
+text_df = pd.DataFrame(zip(headings_list, text_list),columns=['heading', 'content'] )
