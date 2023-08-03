@@ -25,3 +25,20 @@ llm = LlamaCpp(
     n_ctx=1536,
     verbose=False,
 )
+
+
+
+n_gpu_layers = 40  # Change this value based on your model and your GPU VRAM pool.
+n_batch = 256  # Should be between 1 and n_ctx, consider the amount of VRAM in your GPU.
+
+# Loading model,
+llm = LlamaCpp(
+    model_path=model_path,
+    max_tokens=256,
+    n_gpu_layers=n_gpu_layers,
+    n_batch=n_batch,
+    callback_manager=callback_manager,
+    n_ctx=1536,
+    verbose=False,
+)
+chain = load_qa_chain(llm, chain_type="stuff")
