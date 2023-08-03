@@ -106,9 +106,34 @@ for index, span_row in span_df.iterrows():
     else:
 
         tmp.append(text)
-
 text_list.append('\n'.join(tmp))
 
 text_list = text_list[1:]
 
 text_df = pd.DataFrame(zip(headings_list, text_list),columns=['heading', 'content'] )
+
+
+
+
+import re
+from unidecode import unidecode
+spans = pd.DataFrame(columns=['xmin', 'ymin', 'xmax', 'ymax', 'text', 'tag'])
+rows = []
+for page_num, blocks in block_dict.items():
+    for block in blocks:
+        if block['type'] == 0:
+            for line in block['lines']:
+                for span in line['spans']:
+                    xmin, ymin, xmax, ymax = list(span['bbox'])
+                    font_size = span['size']
+                    text = unidecode(span['text'])
+                    span_font = span['font']
+                    is_upper = False
+                    is_bold = False
+                    if "bold" in span_font.lower():
+                        is_bold = True
+                    if re.sub("[\(\[].*?[\)\]]", "", text).isupper():
+                        is_upper = True
+                    if text.replace(" ","") !=  "":
+                        rows.append((xmin, ymin, xmax, ymax, text, is_upper, is_bold, span_font, font_size))
+span_df = pd.DataFrame(rows, columns=['xmin','ymin','xmax','ymax', 'text', 'is_upper','is_bold','span_font', 'font_size'])
