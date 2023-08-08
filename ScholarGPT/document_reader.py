@@ -87,34 +87,6 @@ tmp = []
 
 heading = ''
 
-for index, span_row in span_df.iterrows():
-
-    text = span_row.text
-
-    tag = span_row.tag
-
-    if 'h' in tag:
-
-        headings_list.append(text)
-
-        text_list.append('\n'.join(tmp))
-
-        tmp = []
-
-        heading = text
-
-    else:
-
-        tmp.append(text)
-text_list.append('\n'.join(tmp))
-
-text_list = text_list[1:]
-
-text_df = pd.DataFrame(zip(headings_list, text_list),columns=['heading', 'content'] )
-
-
-
-
 import re
 from unidecode import unidecode
 spans = pd.DataFrame(columns=['xmin', 'ymin', 'xmax', 'ymax', 'text', 'tag'])
