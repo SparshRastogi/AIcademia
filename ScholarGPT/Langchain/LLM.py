@@ -26,26 +26,3 @@ def model():
     n_ctx=1536,
     verbose=False,)
 
-@cl.on_chat_start
-async def factory():
-    llm_predictor = LLMPredictor(
-        llm=ChatOpenAI(
-            temperature=0,
-            model_name="gpt-3.5-turbo",
-            streaming=True,
-        ),
-    )
-    service_context = ServiceContext.from_defaults(
-        llm_predictor=llm_predictor,
-        chunk_size=512,
-        callback_manager=CallbackManager([cl.LlamaIndexCallbackHandler()]),
-    )
-
-    query_engine = index.as_query_engine(
-        service_context=service_context,
-        streaming=True,
-    )
-
-    # storing query_engine instance in chainlit session
-    cl.user_session.set("query_engine", query_engine)
-
